@@ -112,6 +112,7 @@ body {
   letter-spacing: -0.5px;
   line-height: 1.15;
   color: var(--fg); /* nincs színátmenetes felirat */
+  text-align: center;
 }
 
 .vk-intro { margin: 0; opacity: 0.95; color: var(--muted); }
@@ -147,6 +148,8 @@ body {
   border: 1px solid var(--border);
   background: #ffffff;
   cursor: pointer; user-select: none;
+  /* Alap színváltozó; érték-specifikus osztályok ezt felülírják */
+  --radio-color: #111827;
 }
 
 .vk-radio-input {
@@ -160,11 +163,19 @@ body {
 
 /* Kijelölt állapot – fekete/szürke kitöltés */
 .vk-radio-label:has(.vk-radio-input:checked) {
-  border-color: #111827;
-  background: #111827;
-  color: white;
+  border-color: var(--radio-color);
+  background: var(--radio-color);
+  color: #ffffff;
 }
 .vk-radio-label:has(.vk-radio-input:checked) .vk-radio-value { color: white; }
+
+/* Érték szerinti színek (megegyeznek a chipek színeivel) */
+.vk-radio-1 { --radio-color: #ef4444; }
+.vk-radio-2 { --radio-color: #f97316; }
+.vk-radio-3 { --radio-color: #f59e0b; }
+.vk-radio-4 { --radio-color: #10b981; }
+.vk-radio-5 { --radio-color: #059669; }
+.vk-radio-6 { --radio-color: #15803d; }
 
 /* Vezérlők és gombok – fekete/szürke, nincs animáció */
 .vk-controls { display:flex; align-items:center; gap: var(--sp-3); margin-top: var(--sp-6); flex-wrap:wrap; justify-content: center; }
@@ -267,7 +278,7 @@ body {
 .vk-instructions p { margin: 0; color: var(--fg); line-height: 1.6; }
 
 /* Két lépés kártya-grid */
-.vk-instructions-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; align-items: stretch; }
+.vk-instructions-grid { display: grid; grid-template-columns: repeat(1, minmax(0,1fr)); gap: 14px; align-items: stretch; }
 .vk-step {
   position: relative;
   border: 1px solid var(--border);
@@ -284,7 +295,7 @@ body {
   box-shadow: 0 6px 16px rgba(2,6,23,0.2);
 }
 .vk-step-content h3 { margin: 0 0 8px 0; font-size: 1.05rem; }
-.vk-step-content p { margin: 0; }
+.vk-step-content p { margin: 0; text-align: justify; }
 
 /* Értékelési skála – chip-ek */
 .vk-scale { margin-top: 12px; }

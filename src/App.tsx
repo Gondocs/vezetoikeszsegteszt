@@ -288,15 +288,14 @@ export default function VezetoiKepessegek() {
     <div className="vk-container">
             <header className="vk-header">
         <h1>Vezetői készségek – PAMS (84 tétel)</h1>
-        <p className="vk-intro">Jelöld be minden tételnél, mennyire jellemző rád (1 = egyáltalán nem, 6 = nagyon). A lap alján megkapod az (al)skálák összegét és az összpontszámot.</p>
-      </header>
+        </header>
       <section className="vk-instructions">
         <div className="vk-instructions-inner">
           <div className="vk-instructions-grid">
             <div className="vk-step">
               <div className="vk-step-badge">1</div>
               <div className="vk-step-content">
-                <h3>1. lépés</h3>
+                
                 <p>
                   A teszt célja, hogy a kitöltő átfogó képet kapjon a saját menedzseri készségeinek aktuális szintjéről. Kérem, válaszoljon az alábbi 84 állításra a megadott értékelési skála szerint. Kérem, értékelje magatartását a valódi viselkedése alapján, és nem pedig úgy, ahogy ön szeretné, hogy viselkedne. Amennyiben a felsorolt 84 állítás között szerepel olyan tevékenység, amelyet még nem tapasztalt, válaszoljon az Ön eddigi tapasztalatai alapján, valószínűleg hogyan viselkedne adott szituációban. Legyen realista, ennek a tesztnek az a célja, hogy elősegítse az Ön egyedi igényeinek megfelelően az Ön személyes fejlődését és tanulását. A teszt kitöltése után a teszt végén találja a pontozási kulcsot. A teszt segítséget nyújt abban, hogy elkészítse a vezetési képességeinek átfogó profilját, megismerje erősségeit és gyengeségeit.
                 </p>
@@ -305,7 +304,7 @@ export default function VezetoiKepessegek() {
             <div className="vk-step">
               <div className="vk-step-badge">2</div>
               <div className="vk-step-content">
-                <h3>2. lépés</h3>
+                
                 <p>
                   Kérem, töltesse ki a tesztet Önre vonatkozóan három Önt ismerő személlyel, akik korábban megfigyelték Önt olyan helyzetben, amikor emberekkel foglalkozik, vagy esetleg embereket irányít. Majd, kérem, alkalmazza a kitöltött teszteket az önértékelő esszében, ahol összehasonlítja a kapott eredményeket: (1) önértékelését (2) mások által adott értékelését.
                 </p>
@@ -342,7 +341,7 @@ export default function VezetoiKepessegek() {
                   </div>
                   <div className="vk-radio-group" aria-label={`Kérdés ${q.id} válaszok`}>
                     {range(1,6).map(v => (
-                      <label key={v} className="vk-radio-label">
+                        <label key={v} className={`vk-radio-label vk-radio-${v}`}>
                         <input
                           className="vk-radio-input"
                           type="radio"
