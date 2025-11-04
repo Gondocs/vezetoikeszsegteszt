@@ -356,6 +356,43 @@ body {
 /* Preferált: kevesebb mozgás – eleve nincs hover animáció, de az ikon pörgés kikapcsolható */
 @media (prefers-reduced-motion: reduce) { .App-logo { animation: none; } }
 
+/* Nyomtatási stílusok – csak az eredmények jelenjenek meg PDF-ben */
+@media print {
+  body { background: #fff !important; }
+  .vk-container { max-width: 100%; padding: 0 12mm; }
+  @page { size: A4 portrait; margin: 12mm; }
+  /* Elrejtendő részek */
+  .vk-instructions,
+  .vk-section,
+  .vk-controls,
+  .vk-footer,
+  .vk-backtotop { display: none !important; }
+
+  /* Eredmények blokk megjelenítése */
+  .vk-results-section { display: block; }
+  .vk-print-header { display: block; margin: 10mm 0 5mm; }
+  .vk-print-header h1 { margin: 0 0 3mm 0; font-size: 18pt; }
+  .vk-results-title { margin-top: 0; font-size: 14pt; }
+
+  /* Tábla egyszerűsítése nyomtatáshoz */
+  .vk-table-wrap { box-shadow: none; }
+  .vk-table thead { display: table-header-group; }
+  .vk-table tfoot { display: table-footer-group; }
+  .vk-table thead th { background: #ffffff; border-bottom: 1px solid #000; }
+  .vk-table tbody td { border-top: 1px solid #000; }
+  .vk-total-row { background: #f2f2f2 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  /* Oldaltörés optimalizálás */
+  .vk-group { page-break-inside: avoid; break-inside: avoid; }
+  .vk-group-title { page-break-after: avoid; break-after: avoid-page; }
+  .vk-table { page-break-inside: auto; break-inside: auto; }
+  .vk-table tr { page-break-inside: avoid; break-inside: avoid; }
+  .vk-table tbody td { page-break-inside: avoid; break-inside: avoid; }
+}
+
+/* Képernyőn rejtett, printen látszó fejléc */
+.vk-print-header { display: none; }
+
 /* Back to top floating button */
 .vk-backtotop {
   position: fixed; right: 20px; bottom: 20px; z-index: 1000;

@@ -283,6 +283,14 @@ export default function VezetoiKepessegek() {
   }, [results]);
 
   const answeredCount = 84 - missingCount;
+  const today = useMemo(() => new Date().toLocaleDateString('hu-HU'), []);
+  const handlePrint = () => {
+    try {
+      window.print();
+    } catch {
+      /* noop */
+    }
+  };
 
   // Back-to-top button visibility (inside component)
   const [showTop, setShowTop] = useState(false);
@@ -354,16 +362,6 @@ export default function VezetoiKepessegek() {
         <section key={g.key} className={`vk-section ${g.className}`}>
           <h2 className="vk-section-title">{g.title}</h2>
           <div className="vk-questions">
-
-      <button
-        type="button"
-        aria-label="Ugrás az oldal tetejére"
-        className={`vk-backtotop ${showTop ? 'is-visible' : ''}`}
-        style={{ cursor: 'pointer' }}
-        onClick={scrollToTop}
-      >
-        ↑
-      </button>
             {range(g.from, g.to).map(id => {
               const q = QUESTIONS[id - 1];
               return (
@@ -396,54 +394,64 @@ export default function VezetoiKepessegek() {
 
       <section className="vk-controls">
         <button onClick={clearAll} className="btn btn-ghost">Válaszok törlése</button>
+          <button onClick={handlePrint} className="btn btn-solid">PDF mentése</button>
         <div className="vk-progress">Kitöltött: <strong>{answeredCount}/84</strong> {missingCount > 0 ? <span className="vk-missing">(hiányzik: {missingCount})</span> : <span className="vk-done">✅</span>}</div>
        {missingCount > 0 && missingCount < 10 && (
           <div className="vk-missing-list">Hiányzó tételek: {missingIds.join(', ')}</div>
         )}
       </section>
 
-      <h2 className="vk-results-title">Eredmények</h2>
-      {missingCount > 0 && (
-        <div className="vk-warning">Figyelem: {missingCount} tétel nincs még megjelölve, ezért egyes skálák rész-eredményeket mutathatnak.</div>
-      )}
-
-      <div className="vk-results">
-        {grouped.map((group: { group: string; children: Result[] }) => (
-          <div key={group.group} className="vk-group">
-            {group.group && <h3 className="vk-group-title">{group.group}</h3>}
-            <div className="vk-table-wrap">
-              <table className="vk-table">
-                <thead>
-                  <tr>
-                    <th align="left">Skála</th>
-                    <th>Összeg</th>
-                    <th>Max</th>
-                    <th>%</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {group.children.map((r: Result) => (
-                    <tr key={r.key} className={r.subgroup ? 'vk-subgroup-row' : ''}>
-                      <td align="left">{r.label}</td>
-                      <td align="center"><strong>{r.score}</strong></td>
-                      <td align="center">{r.max}</td>
-                      <td align="center">{r.pct}</td>
-                    </tr>
-                  ))}
-                  {group.group === "III. Csoportos készségek" && (
-                    <tr key="TOTAL" className="vk-total-row">
-                      <td align="left"><strong>Összpontszám (1–84)</strong></td>
-                      <td align="center"><strong>{sum(range(1,84), answers)}</strong></td>
-                      <td align="center">{maxScore(range(1,84))}</td>
-                      <td align="center">{pct(sum(range(1,84), answers), maxScore(range(1,84)))}</td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+        <section className="vk-results-section">
+          <div className="vk-print-header">
+            <h1>Vezetői készségek - PAMS eredmények</h1>
+            <div>Dátum: {today}</div>
           </div>
-        ))}
-      </div>
+
+          <h2 className="vk-results-title">Eredmények</h2>
+          {missingCount > 0 && (
+            <div className="vk-warning">Figyelem: {missingCount} tétel nincs még megjelölve, ezért egyes skálák rész-eredményeket mutathatnak.</div>
+          )}
+
+          <div className="vk-results">
+            {grouped.map((group: { group: string; children: Result[] }) => (
+              <div key={group.group} className="vk-group">
+                {group.group && <h3 className="vk-group-title">{group.group}</h3>}
+                <div className="vk-table-wrap">
+                  <table className="vk-table">
+                    <tbody>
+                      {group.children.map((r: Result) => (
+                        <tr key={r.key} className={r.subgroup ? 'vk-subgroup-row' : ''}>
+                          <td align="left">{r.label}</td>
+                          <td align="center"><strong>{r.score}</strong></td>
+                          <td align="center">{r.max}</td>
+                          <td align="center">{r.pct}</td>
+                        </tr>
+                      ))}
+                      {group.group === "III. Csoportos készségek" && (
+                        <tr key="TOTAL" className="vk-total-row">
+                          <td align="left"><strong>Összpontszám (1–84)</strong></td>
+                          <td align="center"><strong>{sum(range(1,84), answers)}</strong></td>
+                          <td align="center">{maxScore(range(1,84))}</td>
+                          <td align="center">{pct(sum(range(1,84), answers), maxScore(range(1,84)))}</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+      
+      <button
+        type="button"
+        aria-label="Ugrás az oldal tetejére"
+        className={`vk-backtotop ${showTop ? 'is-visible' : ''}`}
+        onClick={scrollToTop}
+      >
+        ↑
+      </button>
     </div>
   );
 }
