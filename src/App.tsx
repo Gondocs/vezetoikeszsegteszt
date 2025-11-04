@@ -266,7 +266,7 @@ export default function VezetoiKepessegek() {
   const grouped = useMemo(() => {
     const map = new Map<string, { group: string; children: Result[] }>();
     results.forEach((r: Result) => {
-      const g = r.group ?? "Egyéb";
+      const g = r.group ?? "Összegzés";
       if (!map.has(g)) map.set(g, { group: g, children: [] as Result[] });
       map.get(g)!.children.push(r);
     });
@@ -283,6 +283,14 @@ export default function VezetoiKepessegek() {
   }, [results]);
 
   const answeredCount = 84 - missingCount;
+  const totalScore = useMemo(() => sum(range(1,84), answers), [answers]);
+  const quartileText = useMemo(() => {
+    const s = totalScore;
+    if (s >= 422) return "Ön a negyedik (legjobb) negyedbe tartozik";
+    if (s >= 395) return "Ön a második negyedbe tartozik";
+    if (s >= 369) return "Ön a harmadik negyedbe tartozik";
+    return "Ön az első negyedbe tartozik";
+  }, [totalScore]);
   const today = useMemo(() => new Date().toLocaleDateString('hu-HU'), []);
   const handlePrint = () => {
     try {
@@ -407,7 +415,6 @@ export default function VezetoiKepessegek() {
             <div>Dátum: {today}</div>
           </div>
 
-          <h2 className="vk-results-title">Eredmények</h2>
           {missingCount > 0 && (
             <div className="vk-warning">Figyelem: {missingCount} tétel nincs még megjelölve, ezért egyes skálák rész-eredményeket mutathatnak.</div>
           )}
@@ -427,14 +434,6 @@ export default function VezetoiKepessegek() {
                           <td align="center">{r.pct}</td>
                         </tr>
                       ))}
-                      {group.group === "III. Csoportos készségek" && (
-                        <tr key="TOTAL" className="vk-total-row">
-                          <td align="left"><strong>Összpontszám (1–84)</strong></td>
-                          <td align="center"><strong>{sum(range(1,84), answers)}</strong></td>
-                          <td align="center">{maxScore(range(1,84))}</td>
-                          <td align="center">{pct(sum(range(1,84), answers), maxScore(range(1,84)))}</td>
-                        </tr>
-                      )}
                     </tbody>
                   </table>
                 </div>
@@ -442,6 +441,34 @@ export default function VezetoiKepessegek() {
             ))}
           </div>
         </section>
+
+      {missingCount === 0 && (
+        <section className="vk-benchmark">
+          <h3 className="vk-benchmark-title">Összehasonlítási adatok</h3>
+          <ol className="vk-benchmark-steps">
+            <li>Kérem, hasonlítsa össze pontszámait legalább négy hallgatótársa eredményével.</li>
+            <li>Kérem, hasonlítsa össze az Ön által elért értékeket a mások által Önnek adott értékekkel.</li>
+            <li>
+              Kérem, hasonlítsa össze összeredményét egy kutatás eredményével! 2006-ban végeztek egy felmérést egy
+              üzleti iskola hallgatói között. 5000 fő hallgató töltötte ki ugyanezt a tesztet és az alábbi eredményeket kapták.
+              Kérem, adja össze az Ön által adott összes pontszámot és az eredményt hasonlítsa össze a kutatás eredményeivel.
+            </li>
+          </ol>
+
+          <div className="vk-bench-heading">N = 5000 hallgatóval végzett kutatás eredménye</div>
+          <ul className="vk-bench-bands">
+            <li><strong>394,35</strong> = átlag</li>
+            <li><strong>422</strong> vagy annál nagyobb = Ön a top legjobb negyedik negyedhez tartozik</li>
+            <li><strong>395–421</strong> = a második negyedbe tartozik.</li>
+            <li><strong>369–394</strong> = a harmadik negyedbe tartozik.</li>
+            <li><strong>368</strong> vagy annál kevesebb = az első negyedbe tartozik.</li>
+          </ul>
+
+          <div className="vk-bench-your">
+            Az Ön összpontszáma: <strong>{totalScore}</strong> — <strong>{quartileText}</strong>
+          </div>
+        </section>
+      )}
 
       
       <button

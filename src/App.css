@@ -251,6 +251,63 @@ body {
 .vk-missing-list { color: red; font-weight:700; }
 .vk-note { opacity: 0.9; }
 
+/* Befejezés blokk (ha minden kész) */
+.vk-completion {
+  margin: var(--sp-7) 0 var(--sp-6);
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 20px 18px;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+.vk-completion-title { font-weight: 900; font-size: 1.1rem; margin-bottom: 6px; }
+.vk-completion-meta { color: var(--muted); font-weight: 700; display: flex; gap: 10px; justify-content: center; align-items: center; }
+.vk-completion-sep { opacity: 0.6; }
+.vk-completion-actions { margin-top: 12px; display: flex; gap: 10px; justify-content: center; }
+
+/* Összehasonlítási adatok blokk */
+.vk-benchmark {
+  margin: var(--sp-6) 0 var(--sp-7);
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+  box-shadow: var(--shadow);
+}
+.vk-benchmark-title {
+  margin: 0 0 10px 0;
+  font-weight: 900;
+  font-size: 1.05rem;
+}
+.vk-benchmark-steps {
+  margin: 10px 0 14px;
+  padding-left: 22px;
+}
+.vk-bench-heading {
+  font-weight: 900;
+  margin: 10px 0 8px;
+}
+.vk-bench-bands {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  overflow: hidden;
+}
+.vk-bench-bands li {
+  padding: 10px 12px;
+  border-top: 1px solid var(--border);
+}
+.vk-bench-bands li:first-child { border-top: none; }
+.vk-bench-your {
+  margin-top: 12px;
+  font-weight: 900;
+  text-align: center;
+}
+
 /* Szekciók – egységes, szürke bal szegély */
 .vk-section { margin-top: var(--sp-5); }
 .vk-section-title {
@@ -371,6 +428,8 @@ body {
   .vk-instructions,
   .vk-section,
   .vk-controls,
+  .vk-benchmark,
+  .vk-completion,
   .vk-footer,
   .vk-backtotop { display: none !important; }
 
