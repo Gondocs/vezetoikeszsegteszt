@@ -1,38 +1,289 @@
-.App {
-  text-align: center;
+/*
+  Vezetői Képességek – neutrális, fekete–szürke, letisztult téma
+  --------------------------------------------------------------
+  Módosítások a kérés alapján:
+  - NINCS hover animáció és transzformáció
+  - Szürkés, visszafogott háttér (világos és sötét mód)
+  - Fekete/szürke gombok, nincs szivárvány
+  - Letisztult kártyák és táblázatok
+*/
+
+:root {
+  /* Alapszínek */
+  --bg: #f3f4f6;           /* oldal háttere */
+  --fg: #111827;           /* elsődleges szöveg */
+  --muted: #6b7280;        /* másodlagos szöveg */
+  --card: #ffffff;         /* kártya háttér */
+  --ring: #9ca3af;         /* fókusz gyűrű */
+
+  /* Status színek (megtartva) */
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  /* Határ és árnyék */
+  --border: #e5e7eb;
+  --border-strong: #d1d5db;
+  --shadow: 0 8px 24px rgba(2, 6, 23, 0.06);
+
+  /* Kerekítések és térközök */
+  --radius-sm: 10px;
+  --radius: 14px;
+  --radius-lg: 18px;
+  --sp-1: 4px; --sp-2: 8px; --sp-3: 12px; --sp-4: 16px; --sp-5: 20px; --sp-6: 24px; --sp-7: 28px; --sp-8: 32px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Sötét mód – állítsd a <html> vagy <body> elemre: data-theme="dark" */
+:root[data-theme="dark"] {
+  --bg: #0b1220;
+  --fg: #e5e7eb;
+  --muted: #9ca3af;
+  --card: #0f172a;
+  --ring: #9ca3af;
+  --border: #1f2937;
+  --border-strong: #374151;
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
 }
+
+/* Alap reset */
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  color: var(--fg);
+  background: var(--bg); /* lapos, szürkés háttér */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:focus-visible {
+  outline: 3px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+/* Visszafogott görgetősávok */
+*::-webkit-scrollbar { height: 10px; width: 10px; }
+*::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+*::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* -----------------------------
+   React App alap elemek
+------------------------------ */
+.App { text-align: center; }
+
+.App-logo { height: 40vmin; pointer-events: none; filter: drop-shadow(0 8px 18px rgba(15,23,42,0.18)); }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+  .App-logo { animation: App-logo-spin infinite 18s linear; }
 }
 
 .App-header {
-  background-color: #282c34;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: clamp(16px, 10px + 2vmin, 22px);
+  color: var(--fg);
+  background: var(--bg); /* eltávolított színes gradientek */
+}
+
+.App-link { color: #111827; text-underline-offset: 2px; }
+.App-link:hover { text-decoration: underline; } /* nem animált, csak vizuális jelzés */
+
+@keyframes App-logo-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* -----------------------------
+   VezetoiKepessegek (VK)
+------------------------------ */
+.vk-container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: var(--sp-6);
+  color: var(--fg);
+}
+
+.vk-header h1 {
+  margin: 0 0 var(--sp-2) 0;
+  font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.1rem);
+  letter-spacing: -0.5px;
+  line-height: 1.15;
+  color: var(--fg); /* nincs színátmenetes felirat */
+}
+
+.vk-intro { margin: 0; opacity: 0.95; color: var(--muted); }
+
+.vk-questions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-4);
+  margin-top: var(--sp-4);
+}
+
+.vk-question-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+/* Nincs hover animáció vagy árnyék változás */
+
+.vk-q-row { display: flex; align-items: flex-start; gap: var(--sp-3); }
+.vk-q-id { min-width: 38px; font-weight: 800; color: var(--fg); opacity: 0.9; }
+.vk-q-text { flex: 1; color: var(--fg); }
+
+/* Rádiócsoport – neutrális "pill" stílus, animáció nélkül */
+.vk-radio-group { display: flex; gap: var(--sp-2); margin-top: var(--sp-3); flex-wrap: wrap; justify-content: center; }
+
+.vk-radio-label {
+  position: relative;
+  display: inline-flex; align-items: center; gap: var(--sp-2);
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #ffffff;
+  cursor: pointer; user-select: none;
+}
+
+.vk-radio-input {
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer;
+}
+
+.vk-radio-label:has(.vk-radio-input:focus-visible) { box-shadow: 0 0 0 3px var(--ring); }
+
+.vk-radio-value { font-weight: 700; color: var(--fg); letter-spacing: 0.2px; }
+
+/* Kijelölt állapot – fekete/szürke kitöltés */
+.vk-radio-label:has(.vk-radio-input:checked) {
+  border-color: #111827;
+  background: #111827;
   color: white;
 }
+.vk-radio-label:has(.vk-radio-input:checked) .vk-radio-value { color: white; }
 
-.App-link {
-  color: #61dafb;
+/* Vezérlők és gombok – fekete/szürke, nincs animáció */
+.vk-controls { display:flex; align-items:center; gap: var(--sp-3); margin-top: var(--sp-6); flex-wrap:wrap; justify-content: center; }
+
+.btn {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 800;
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  color: var(--fg);
+  box-shadow: var(--shadow);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btn-ghost { background: var(--card); color: var(--fg); border-color: var(--border-strong); }
+.btn-solid  { background: #111827; color: #ffffff; border-color: #111827; }
+.btn:active  { filter: brightness(0.96); } /* visszajelzés, de nem animált */
+
+.vk-progress { opacity: 0.95; color: var(--muted); font-weight: 600; }
+.vk-missing  { color: red; font-weight: 700; }
+.vk-done     { color: var(--success); font-weight: 700; }
+
+/* Figyelmeztetés / info doboz */
+.vk-warning {
+  color: #8a4e00;
+  background: #fff7e6;
+  border: 1px solid #ffe8bf;
+  padding: var(--sp-3);
+  border-radius: var(--radius-sm);
+  margin-top: var(--sp-3);
 }
+
+/* Eredmények */
+.vk-results-title { margin-top: var(--sp-7); }
+.vk-results { overflow-x: auto; margin-top: var(--sp-2); }
+
+.vk-group { margin-bottom: var(--sp-7); }
+.vk-group-title { margin: var(--sp-4) 0 var(--sp-2); color: var(--fg); font-weight: 800; }
+
+.vk-table-wrap {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.vk-table { width: 100%; border-collapse: collapse; font-size: 0.98rem; }
+
+.vk-table thead th {
+  position: sticky; top: 0; z-index: 1;
+  text-align: left; padding: 14px 16px; background: #f3f4f6;
+  color: var(--fg); font-weight: 800; border-bottom: 1px solid var(--border-strong);
+}
+
+.vk-table tbody td { padding: 12px 16px; border-top: 1px solid #e5e7eb; color: #1f2937; }
+
+/* Hover kiemelés nélkül, letisztultan */
+.vk-subgroup-row td { padding-left: 22px; }
+.vk-total-row { background: #f6f7f9; font-weight: 800; }
+
+/* Lábléc */
+.vk-footer { margin-top: var(--sp-3); font-size: 13px; color: var(--muted); display:flex; flex-direction:column; gap: var(--sp-2); }
+.vk-missing-list { color: red; font-weight:700; }
+.vk-note { opacity: 0.9; }
+
+/* Szekciók – egységes, szürke bal szegély */
+.vk-section { margin-top: var(--sp-5); }
+.vk-section-title {
+  margin: 6px 0 10px;
+  font-size: clamp(1.1rem, 1rem + 0.6vw, 1.4rem);
+  font-weight: 900; color: var(--fg);
+  padding-left: 12px; border-left: 8px solid #9ca3af;
+  letter-spacing: -0.2px;
+}
+/* Ha szeretnéd megkülönböztetni az I/II/III szekciót árnyalatokkal: */
+.vk-section--i .vk-section-title { border-color: #111827; }  /* sötétszürke */
+.vk-section--ii .vk-section-title { border-color: #4b5563; } /* középszürke */
+.vk-section--iii .vk-section-title { border-color: #9ca3af; } /* világosszürke */
+
+/* Kártyák egységesen fehérek (nincs színezett háttér) */
+.vk-section--i .vk-question-card,
+.vk-section--ii .vk-question-card,
+.vk-section--iii .vk-question-card { background: var(--card); border-color: var(--border); }
+
+/* Reszponzivitás */
+@media (min-width: 780px) { .vk-questions { grid-template-columns: 1fr; } }
+
+/* Eredmények – reszponzív táblázat mobilon/tableten */
+@media (max-width: 900px) {
+  .vk-table-wrap { border: none; background: transparent; box-shadow: none; }
+  .vk-table thead { display: none; }
+  .vk-table, .vk-table tbody { display: block; width: 100%; }
+  .vk-table tbody tr {
+    display: block;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin: 12px 0;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .vk-table tbody td {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    align-items: center;
+    padding: 10px 14px;
+    border-top: 1px solid var(--border);
+  }
+  .vk-table tbody td:first-child { border-top: none; }
+  .vk-table tbody td:nth-child(1)::before { content: "Skála"; font-weight: 800; color: var(--fg); }
+  .vk-table tbody td:nth-child(2)::before { content: "Összeg"; font-weight: 700; color: var(--muted); }
+  .vk-table tbody td:nth-child(3)::before { content: "Max"; font-weight: 700; color: var(--muted); }
+  .vk-table tbody td:nth-child(4)::before { content: "%"; font-weight: 700; color: var(--muted); }
+  .vk-subgroup-row td { padding-left: 14px; }
+  .vk-total-row { background: #f6f7f9; }
+  .vk-total-row td:nth-child(1)::before { content: "Összpontszám"; }
+}
+
+/* Preferált: kevesebb mozgás – eleve nincs hover animáció, de az ikon pörgés kikapcsolható */
+@media (prefers-reduced-motion: reduce) { .App-logo { animation: none; } }
