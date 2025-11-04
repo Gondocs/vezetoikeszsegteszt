@@ -405,6 +405,8 @@ body {
     align-items: center;
     padding: 10px 14px;
     border-top: 1px solid var(--border);
+    text-align: center;
+    justify-items: center;
   }
   .vk-table tbody td:first-child { border-top: none; }
   .vk-table tbody td:nth-child(1)::before { content: "Skála"; font-weight: 800; color: var(--fg); }
