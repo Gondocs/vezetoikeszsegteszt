@@ -1,5 +1,5 @@
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import './App.css';
 
 // Minimum JSX típusok, ha a React típusok nincsenek telepítve a környezetben
@@ -284,10 +284,33 @@ export default function VezetoiKepessegek() {
 
   const answeredCount = 84 - missingCount;
 
+  // Back-to-top button visibility (inside component)
+  const [showTop, setShowTop] = useState(false);
+  useEffect(() => {
+    const onScroll = () => {
+      try {
+        setShowTop(window.scrollY > 400);
+      } catch {
+        /* no-op */
+      }
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true } as any);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    try {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch {
+      window.scrollTo(0, 0);
+    }
+  };
+
   return (
     <div className="vk-container">
             <header className="vk-header">
-        <h1>Vezetői készségek – PAMS (84 tétel)</h1>
+        <h1>Vezetői készségek - PAMS (84 tétel)</h1>
         </header>
       <section className="vk-instructions">
         <div className="vk-instructions-inner">
@@ -331,6 +354,16 @@ export default function VezetoiKepessegek() {
         <section key={g.key} className={`vk-section ${g.className}`}>
           <h2 className="vk-section-title">{g.title}</h2>
           <div className="vk-questions">
+
+      <button
+        type="button"
+        aria-label="Ugrás az oldal tetejére"
+        className={`vk-backtotop ${showTop ? 'is-visible' : ''}`}
+        style={{ cursor: 'pointer' }}
+        onClick={scrollToTop}
+      >
+        ↑
+      </button>
             {range(g.from, g.to).map(id => {
               const q = QUESTIONS[id - 1];
               return (

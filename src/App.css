@@ -108,6 +108,8 @@ body {
 
 .vk-header h1 {
   margin: 0 0 var(--sp-2) 0;
+  margin-top: 30px;
+  margin-bottom: 40px;
   font-size: clamp(1.6rem, 1.2rem + 1.2vw, 2.1rem);
   letter-spacing: -0.5px;
   line-height: 1.15;
@@ -266,7 +268,7 @@ body {
 .vk-instructions {
   position: relative;
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding: 0px;
   margin-bottom: 22px;
 }
 .vk-instructions::before {
@@ -353,3 +355,17 @@ body {
 
 /* Preferált: kevesebb mozgás – eleve nincs hover animáció, de az ikon pörgés kikapcsolható */
 @media (prefers-reduced-motion: reduce) { .App-logo { animation: none; } }
+
+/* Back to top floating button */
+.vk-backtotop {
+  position: fixed; right: 20px; bottom: 20px; z-index: 1000;
+  width: 46px; height: 46px; border-radius: 999px;
+  display: none; place-items: center;
+  border: 1px solid var(--border-strong);
+  background: #111827; color: #fff;
+  box-shadow: var(--shadow);
+  font-size: 22px; line-height: 1;
+}
+.vk-backtotop.is-visible { display: grid; }
+.vk-backtotop:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
+.vk-backtotop:active { filter: brightness(0.95); }
