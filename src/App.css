@@ -142,8 +142,8 @@ body {
 .vk-radio-label {
   position: relative;
   display: inline-flex; align-items: center; gap: var(--sp-2);
-  padding: 8px 12px;
-  border-radius: 999px;
+  padding: 12px 20px;
+  border-radius: 8px;
   border: 1px solid var(--border);
   background: #ffffff;
   cursor: pointer; user-select: none;
@@ -250,6 +250,61 @@ body {
 .vk-section--i .vk-question-card,
 .vk-section--ii .vk-question-card,
 .vk-section--iii .vk-question-card { background: var(--card); border-color: var(--border); }
+
+/* Instrukciók a teszt tetején */
+.vk-instructions {
+  position: relative;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 22px;
+}
+.vk-instructions::before {
+  content: "";
+  position: absolute; inset: 0; pointer-events: none;
+  border-radius: inherit;
+}
+.vk-instructions-inner { position: relative; z-index: 1; max-width: 980px; margin: 0 auto; }
+.vk-instructions p { margin: 0; color: var(--fg); line-height: 1.6; }
+
+/* Két lépés kártya-grid */
+.vk-instructions-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 14px; align-items: stretch; }
+.vk-step {
+  position: relative;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: var(--radius);
+  padding: 18px 16px 16px 16px;
+  box-shadow: var(--shadow);
+}
+.vk-step-badge {
+  position: absolute; top: -12px; left: -12px;
+  width: 40px; height: 40px; border-radius: 999px;
+  display: grid; place-items: center;
+  font-weight: 900; color: #fff; background: #111827; border: 3px solid #ffffff;
+  box-shadow: 0 6px 16px rgba(2,6,23,0.2);
+}
+.vk-step-content h3 { margin: 0 0 8px 0; font-size: 1.05rem; }
+.vk-step-content p { margin: 0; }
+
+/* Értékelési skála – chip-ek */
+.vk-scale { margin-top: 12px; }
+.vk-scale-title { font-weight: 900; color: var(--fg); margin: 10px 0; letter-spacing: 0.2px; }
+.vk-scale-chips { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 10px; }
+.chip { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--border); background: #fff; border-radius: 12px; box-shadow: var(--shadow); }
+.chip-index { display:inline-grid; place-items:center; width: 34px; height: 34px; border-radius: 999px; font-weight: 900; color: #fff; }
+.chip-label { font-weight: 700; color: #111827; }
+.chip-1 .chip-index { background: #ef4444; }
+.chip-2 .chip-index { background: #f97316; }
+.chip-3 .chip-index { background: #f59e0b; }
+.chip-4 .chip-index { background: #10b981; }
+.chip-5 .chip-index { background: #059669; }
+.chip-6 .chip-index { background: #15803d; }
+
+@media (max-width: 900px) {
+  .vk-instructions { padding: 16px; }
+  .vk-instructions-grid { grid-template-columns: 1fr; }
+  .vk-scale-chips { grid-template-columns: 1fr; }
+}
 
 /* Reszponzivitás */
 @media (min-width: 780px) { .vk-questions { grid-template-columns: 1fr; } }

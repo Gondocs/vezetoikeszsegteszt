@@ -286,10 +286,47 @@ export default function VezetoiKepessegek() {
 
   return (
     <div className="vk-container">
-      <header className="vk-header">
+            <header className="vk-header">
         <h1>Vezetői készségek – PAMS (84 tétel)</h1>
         <p className="vk-intro">Jelöld be minden tételnél, mennyire jellemző rád (1 = egyáltalán nem, 6 = nagyon). A lap alján megkapod az (al)skálák összegét és az összpontszámot.</p>
       </header>
+      <section className="vk-instructions">
+        <div className="vk-instructions-inner">
+          <div className="vk-instructions-grid">
+            <div className="vk-step">
+              <div className="vk-step-badge">1</div>
+              <div className="vk-step-content">
+                <h3>1. lépés</h3>
+                <p>
+                  A teszt célja, hogy a kitöltő átfogó képet kapjon a saját menedzseri készségeinek aktuális szintjéről. Kérem, válaszoljon az alábbi 84 állításra a megadott értékelési skála szerint. Kérem, értékelje magatartását a valódi viselkedése alapján, és nem pedig úgy, ahogy ön szeretné, hogy viselkedne. Amennyiben a felsorolt 84 állítás között szerepel olyan tevékenység, amelyet még nem tapasztalt, válaszoljon az Ön eddigi tapasztalatai alapján, valószínűleg hogyan viselkedne adott szituációban. Legyen realista, ennek a tesztnek az a célja, hogy elősegítse az Ön egyedi igényeinek megfelelően az Ön személyes fejlődését és tanulását. A teszt kitöltése után a teszt végén találja a pontozási kulcsot. A teszt segítséget nyújt abban, hogy elkészítse a vezetési képességeinek átfogó profilját, megismerje erősségeit és gyengeségeit.
+                </p>
+              </div>
+            </div>
+            <div className="vk-step">
+              <div className="vk-step-badge">2</div>
+              <div className="vk-step-content">
+                <h3>2. lépés</h3>
+                <p>
+                  Kérem, töltesse ki a tesztet Önre vonatkozóan három Önt ismerő személlyel, akik korábban megfigyelték Önt olyan helyzetben, amikor emberekkel foglalkozik, vagy esetleg embereket irányít. Majd, kérem, alkalmazza a kitöltött teszteket az önértékelő esszében, ahol összehasonlítja a kapott eredményeket: (1) önértékelését (2) mások által adott értékelését.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div className="vk-scale">
+            <div className="vk-scale-title">Értékelési skála</div>
+            <ul className="vk-scale-chips">
+              <li className="chip chip-1"><span className="chip-index">1</span><span className="chip-label">Egyáltalán nem értek egyet</span></li>
+              <li className="chip chip-2"><span className="chip-index">2</span><span className="chip-label">Nem értek egyet</span></li>
+              <li className="chip chip-3"><span className="chip-index">3</span><span className="chip-label">Némileg nem értek egyet</span></li>
+              <li className="chip chip-4"><span className="chip-index">4</span><span className="chip-label">Valamelyest egyetértek</span></li>
+              <li className="chip chip-5"><span className="chip-index">5</span><span className="chip-label">Egyetértek</span></li>
+              <li className="chip chip-6"><span className="chip-index">6</span><span className="chip-label">Teljes mértékben egyetértek</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
 
       {QUESTION_GROUPS.map(g => (
         <section key={g.key} className={`vk-section ${g.className}`}>
