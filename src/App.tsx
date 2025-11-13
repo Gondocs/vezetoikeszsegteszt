@@ -301,6 +301,78 @@ export default function VezetoiKepessegek() {
     }
   };
 
+  // Fájl letöltő helper
+  const downloadFile = (filename: string, content: string | Blob, mime?: string) => {
+    try {
+      const blob = content instanceof Blob ? content : new Blob([content], { type: mime || 'application/octet-stream' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      a.style.display = 'none';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } catch {
+      /* noop */
+    }
+  };
+
+  // Export JSON: nyers válaszok + számított eredmények
+  const handleExportJSON = () => {
+    const payload = {
+      date: new Date().toISOString(),
+      localeDate: today,
+      answeredCount,
+      missingCount,
+      missingIds,
+      totalScore,
+      quartileText,
+      answers,
+      results,
+    };
+    const y = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const fname = `pams_export_${y.getFullYear()}${pad(y.getMonth()+1)}${pad(y.getDate())}.json`;
+    downloadFile(fname, JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
+  };
+
+  // Export CSV: két táblázatot támogatunk külön fájlokkal (válaszok, eredmények)
+  const toCSV = (rows: (string | number)[][]) => {
+    const esc = (v: string | number) => {
+      const s = String(v ?? '');
+      if (/[",\n]/.test(s)) return '"' + s.replace(/"/g, '""') + '"';
+      return s;
+    };
+    return rows.map(r => r.map(esc).join(',')).join('\n');
+  };
+
+  const handleExportCSV = () => {
+    // 1) Válaszok: id, text, answer
+    const answerRows: (string | number)[][] = [
+      ['id', 'text', 'answer']
+    ];
+    QUESTIONS.forEach(q => {
+      answerRows.push([q.id, q.text, answers[q.id] ?? '']);
+    });
+    const answersCsv = toCSV(answerRows);
+    // 2) Eredmények: key, label, score, max, pct, group, subgroup
+    const resultRows: (string | number)[][] = [
+      ['key', 'label', 'score', 'max', 'pct', 'group', 'subgroup']
+    ];
+    results.forEach(r => {
+      resultRows.push([r.key, r.label, r.score, r.max, r.pct, r.group ?? '', r.subgroup ?? '']);
+    });
+    const resultsCsv = toCSV(resultRows);
+
+    const y = new Date();
+    const pad = (n: number) => String(n).padStart(2, '0');
+    const base = `pams_export_${y.getFullYear()}${pad(y.getMonth()+1)}${pad(y.getDate())}`;
+    downloadFile(`${base}_valaszok.csv`, answersCsv, 'text/csv;charset=utf-8');
+    downloadFile(`${base}_eredmenyek.csv`, resultsCsv, 'text/csv;charset=utf-8');
+  };
+
   // Back-to-top button visibility (inside component)
   const [showTop, setShowTop] = useState(false);
   useEffect(() => {
@@ -404,6 +476,8 @@ export default function VezetoiKepessegek() {
       <section className="vk-controls">
         <button onClick={clearAll} className="btn btn-ghost">Válaszok törlése</button>
           <button onClick={handlePrint} className="btn btn-solid">PDF mentése</button>
+          <button onClick={handleExportJSON} className="btn btn-ghost">Adatok exportálása (JSON)</button>
+          <button onClick={handleExportCSV} className="btn btn-ghost">Adatok exportálása (CSV)</button>
         <div className="vk-progress">Kitöltött: <strong>{answeredCount}/84</strong> {missingCount > 0 ? <span className="vk-missing">(hiányzik: {missingCount})</span> : <span className="vk-done">✅</span>}</div>
        {missingCount > 0 && missingCount < 10 && (
           <div className="vk-missing-list">Hiányzó tételek: {missingIds.join(', ')}</div>
